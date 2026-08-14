@@ -1,0 +1,667 @@
+[
+  {
+    "id": "q-second-card-king",
+    "sourceRef": "classic / green book ch.4",
+    "topic": "Probability",
+    "subtopic": "Conditional probability",
+    "statement": "Two cards are drawn without replacement from a standard 52-card deck. Given that the second card is a king, what is the probability that the first card was also a king?",
+    "statementAudio": "Two cards are drawn, one after another, from a normal 52-card deck — no replacement. I tell you the second card turned out to be a king. What's the probability the first card was also a king? ... Got the setup?",
+    "difficulty": 2,
+    "primaryPatternId": "bayes-reverse-conditioning",
+    "secondaryPatternId": "symmetry-exchangeability",
+    "recognitionClues": [
+      "you are told a LATER outcome and asked about an EARLIER one — that direction is Bayes",
+      "draws without replacement — the events are dependent",
+      "exchangeability shortcut: the positions of the cards are symmetric"
+    ],
+    "prerequisites": ["conditional probability", "Bayes' rule"],
+    "commonMistake": "Treating the two draws as independent and answering 4/52.",
+    "similarQuestionIds": ["q-two-children-boy", "q-monty-hall"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What exactly are you conditioning on, and what are you asked for?",
+      "L2": "You're told something about the SECOND card and asked about the FIRST. What technique reverses the direction of conditioning?",
+      "L3": "This is Bayes' rule — or, faster, think about exchangeability of the two positions.",
+      "L4": "Write P(first is king given second is king) as P(both kings) divided by P(second is king). What is P(second card is a king), before knowing anything about the first?",
+      "L5": "Together now: P(both kings) is 4 over 52 times 3 over 51. By symmetry, P(second is king) is 4 over 52. Divide them.",
+      "L6": "Full solution: the ratio gives 3 over 51, which is 1 over 17. The lesson: whenever you're told a later event and asked about an earlier one, that direction-reversal is the tell for Bayes — and with cards, exchangeability often hands you P(second is king) instantly."
+    },
+    "rubric": {
+      "required": [
+        "identifies that the direction (later to earlier) calls for Bayes or an exchangeability argument",
+        "does NOT assume independence of the draws",
+        "states P(second is king) = 4/52 by symmetry, or computes it via total probability",
+        "arrives at 3/51 = 1/17"
+      ],
+      "bonus": ["notes the exchangeability shortcut explicitly: given the second is a king, the first is a uniform draw from the remaining 51 cards, 3 of which are kings"]
+    },
+    "canonicalSolution": "P(K1|K2) = P(K1 and K2)/P(K2) = ((4/52)(3/51))/(4/52) = 3/51 = 1/17. Fast route: by exchangeability, conditioning on the second card being a king, the first card is a uniform draw from the remaining 51 cards, 3 of which are kings.",
+    "variations": [
+      { "statementAudio": "An urn has 5 red and 7 blue balls. Two are drawn without replacement. Given the second ball is red, what's the probability the first was red?", "note": "same move, urn surface; answer 4/11" },
+      { "statementAudio": "Three people are each dealt one card. Given the third person got an ace, what's the probability the first person did too?", "note": "same move, adds a third position; answer 3/51" }
+    ]
+  },
+  {
+    "id": "q-two-children-boy",
+    "sourceRef": "classic",
+    "topic": "Probability",
+    "subtopic": "Conditional probability",
+    "statement": "A family has two children. At least one of them is a boy. What is the probability that both are boys?",
+    "statementAudio": "A family has two children. I tell you at least one of them is a boy. What's the probability both are boys?",
+    "difficulty": 2,
+    "primaryPatternId": "condition-on-first-event",
+    "secondaryPatternId": "equally-likely-count",
+    "recognitionClues": [
+      "'at least one' inside a conditioning statement — enumerate the reduced sample space",
+      "the naive answer of one half ignores HOW the information was obtained",
+      "small discrete sample space — just list it"
+    ],
+    "prerequisites": ["conditional probability", "sample spaces"],
+    "commonMistake": "Answering 1/2 by treating the information as being about a specific child.",
+    "similarQuestionIds": ["q-second-card-king"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What is the full sample space for two children, and which outcomes survive the condition?",
+      "L2": "Don't compute — enumerate. List the four equally likely gender orders, then strike out the ones the condition eliminates.",
+      "L3": "This is conditioning on a reduced sample space: of BB, BG, GB, GG, which remain?",
+      "L4": "Three outcomes remain: BB, BG, GB — all equally likely. Which of them satisfy 'both boys'?",
+      "L5": "Together: P(both boys | at least one boy) = P(BB) / P(BB or BG or GB) = (1/4) / (3/4).",
+      "L6": "Full solution: 1/3. The lesson: 'at least one' conditions are about the SET of families, not a specific child. If instead you'd met one child and seen a boy, the answer would be 1/2 — the sampling mechanism is part of the problem."
+    },
+    "rubric": {
+      "required": [
+        "enumerates the four equally likely outcomes",
+        "correctly reduces the sample space to BB, BG, GB",
+        "arrives at 1/3",
+        "can explain why 1/2 is wrong here"
+      ],
+      "bonus": ["distinguishes 'at least one is a boy' from 'a randomly met child is a boy' (which gives 1/2)"]
+    },
+    "canonicalSolution": "Sample space {BB, BG, GB, GG}, equally likely. Conditioning on at least one boy removes GG, leaving three equally likely outcomes of which one is BB. Answer: 1/3.",
+    "variations": [
+      { "statementAudio": "Two dice are rolled. Given at least one shows a six, what's the probability both show sixes?", "note": "same reduced-sample-space move; answer 1/11" },
+      { "statementAudio": "A family has two children, and at least one is a boy born on a Tuesday. Probability both are boys?", "note": "famous harder variant; answer 13/27 — desk discussion recommended" }
+    ]
+  },
+  {
+    "id": "q-monty-hall",
+    "sourceRef": "classic",
+    "topic": "Probability",
+    "subtopic": "Conditional probability",
+    "statement": "On a game show there are three doors; one hides a car, two hide goats. You pick a door. The host, who knows where the car is, opens a different door revealing a goat, and offers you the chance to switch. Should you switch, and what is your probability of winning if you do?",
+    "statementAudio": "Three doors: one car, two goats. You pick a door. The host — who knows where the car is — opens one of the OTHER doors, always revealing a goat, and offers you a switch. Should you switch? And what's your win probability if you do?",
+    "difficulty": 2,
+    "primaryPatternId": "bayes-reverse-conditioning",
+    "secondaryPatternId": "condition-on-first-event",
+    "recognitionClues": [
+      "the host's action is INFORMATIVE because his behavior is constrained — he never reveals the car",
+      "condition on your initial pick: the rest follows mechanically",
+      "if the naive answer is 'fifty-fifty', ask what information the reveal carried"
+    ],
+    "prerequisites": ["conditional probability"],
+    "commonMistake": "Claiming the two remaining doors are 50/50 — ignoring that the host's choice was constrained by knowledge.",
+    "similarQuestionIds": ["q-second-card-king", "q-two-children-boy"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What's the probability your ORIGINAL door was right, before the host did anything?",
+      "L2": "Condition on your first pick. If your first pick was wrong — which happens how often? — what does switching get you?",
+      "L3": "This is conditioning on the first event: your initial pick is right with probability 1/3, wrong with probability 2/3. Trace each case.",
+      "L4": "If your pick was wrong (probability 2/3), the host is FORCED to open the only other goat door — so the remaining door is the car. What does that make switching worth?",
+      "L5": "Together: P(win by switching) = P(initial pick wrong) = 2/3. P(win by staying) = 1/3.",
+      "L6": "Full solution: switch, win with probability 2/3. The lesson: the host's constrained behavior transfers the 2/3 mass to the remaining door. Test understanding: if the host opened a random door and it HAPPENED to be a goat, switching would be worth only 1/2."
+    },
+    "rubric": {
+      "required": [
+        "identifies that the host's knowledge/constraint is what makes the reveal informative",
+        "conditions on the initial pick being right (1/3) or wrong (2/3)",
+        "concludes switching wins with probability 2/3"
+      ],
+      "bonus": ["contrasts with the random-host variant where the answer becomes 1/2"]
+    },
+    "canonicalSolution": "Condition on the initial pick. With probability 1/3 it's the car and switching loses; with probability 2/3 it's a goat, the host must open the other goat door, and switching wins. P(win | switch) = 2/3.",
+    "variations": [
+      { "statementAudio": "Same setup with 100 doors: you pick one, the host opens 98 goat doors. Probability of winning if you switch?", "note": "amplified version; answer 99/100" },
+      { "statementAudio": "Same 3-door setup, but the host forgot where the car is, opened a random other door, and it happened to be a goat. Now what's switching worth?", "note": "tests the mechanism, not the memorized answer; answer 1/2" }
+    ]
+  },
+  {
+    "id": "q-birthday-50",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Counting",
+    "statement": "How many people must be in a room for the probability that at least two share a birthday to exceed 50%? (Assume 365 equally likely birthdays.)",
+    "statementAudio": "How many people do you need in a room before it's more likely than not that at least two of them share a birthday? Assume 365 equally likely birthdays. Rough reasoning first, then we can sharpen it.",
+    "difficulty": 2,
+    "primaryPatternId": "complement-counting",
+    "secondaryPatternId": null,
+    "recognitionClues": [
+      "'at least two share' — the complement 'all distinct' is vastly easier",
+      "product of survival probabilities: each new person must miss all previous birthdays",
+      "pairwise collisions grow like n squared — expect the answer to be near sqrt of 365, not half of 365"
+    ],
+    "prerequisites": ["independence", "complement rule"],
+    "commonMistake": "Intuition anchored on 365/2; forgetting the number of PAIRS grows quadratically.",
+    "similarQuestionIds": ["q-hat-matching"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What event is easier to compute: 'at least one shared birthday' or its opposite?",
+      "L2": "'At least one' is the tell for the complement. What's the probability that ALL n birthdays are distinct?",
+      "L3": "P(all distinct) is a product: the second person misses 1 date, the third misses 2, and so on. Write the product.",
+      "L4": "P(all distinct) = 364/365 times 363/365 times... Now think about how many PAIRS n people have — each pair collides with probability 1/365. Roughly, you need about n-squared-over-2 pairs times 1/365 to reach a half.",
+      "L5": "Together: n(n-1)/2 ≈ 365 times log 2 ≈ 253 gives n around 23. The exact computation confirms: at n = 23 the collision probability is about 50.7%.",
+      "L6": "Full solution: 23 people. The lesson: 'at least one' means complement, and collision counts grow with pairs — n squared, not n — which is why the answer is near the square root of 365."
+    },
+    "rubric": {
+      "required": [
+        "reaches for the complement (all birthdays distinct) rather than direct enumeration",
+        "writes P(all distinct) as the product of (365-k)/365 terms",
+        "explains why the answer is far below 183 — pairs grow quadratically",
+        "lands on 23 (accept 20-25 with correct method)"
+      ],
+      "bonus": ["uses the exponential approximation: P(all distinct) ≈ exp(-n(n-1)/730)"]
+    },
+    "canonicalSolution": "P(no collision among n) = 365·364···(365-n+1)/365^n = Π(1 - k/365) ≈ exp(-n(n-1)/730). Setting this to 1/2: n(n-1) ≈ 730·ln2 ≈ 506, n ≈ 23. Exact check: n=23 gives collision probability ≈ 0.507.",
+    "variations": [
+      { "statementAudio": "Ten balls are dropped independently and uniformly into 20 boxes. What's the probability that at least two balls share a box?", "note": "same complement move; 1 - 20!/(10! · 20^10)... = 1 - Π(1-k/20), k=1..9 ≈ 0.93" },
+      { "statementAudio": "How many people do you need before it's more likely than not that someone shares YOUR birthday?", "note": "not pairwise — linear now; 1-(364/365)^n > 1/2 gives n = 253. Tests whether they see the structural difference" }
+    ]
+  },
+  {
+    "id": "q-hat-matching",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Expectation",
+    "statement": "N people throw their hats in a pile and each draws one uniformly at random. What is the expected number of people who get their own hat back?",
+    "statementAudio": "N people toss their hats into a pile, shuffle, and each person draws one at random. On average, how many people end up with their own hat?",
+    "difficulty": 2,
+    "primaryPatternId": "indicators-linearity",
+    "secondaryPatternId": "symmetry-exchangeability",
+    "recognitionClues": [
+      "only the EXPECTED count is asked — no distribution needed",
+      "the count decomposes into a sum of per-person indicators",
+      "dependence between people is irrelevant: linearity doesn't care"
+    ],
+    "prerequisites": ["expectation", "indicator variables"],
+    "commonMistake": "Trying to compute the full distribution (derangement analysis) when only the mean is needed; or worrying that dependence breaks the sum.",
+    "similarQuestionIds": ["q-birthday-50", "q-coupon-collector"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What random variable are you actually asked about — a probability or an expectation?",
+      "L2": "When you only need E of a count, what's the standard decomposition?",
+      "L3": "Indicators plus linearity: write the number of matches as a sum of N indicator variables, one per person.",
+      "L4": "What's the probability that person i draws their own hat? By symmetry it's the same for everyone.",
+      "L5": "Together: each indicator has expectation 1/N, and there are N of them. Linearity needs no independence.",
+      "L6": "Full solution: E = N × 1/N = 1, for every N. The lesson: 'expected number of...' is the signature of indicators + linearity, and dependence between the indicators is completely irrelevant to the mean."
+    },
+    "rubric": {
+      "required": [
+        "recognizes only the expectation is needed",
+        "decomposes the count into per-person indicators",
+        "states P(person i gets own hat) = 1/N by symmetry",
+        "concludes E = 1 regardless of N, and notes independence was never needed"
+      ],
+      "bonus": ["mentions the distribution converges to Poisson(1) — matches are rare and weakly dependent"]
+    },
+    "canonicalSolution": "X = Σ Xi where Xi indicates person i gets their own hat. E[Xi] = 1/N by symmetry. E[X] = N·(1/N) = 1. Linearity of expectation requires no independence.",
+    "variations": [
+      { "statementAudio": "A deck of 52 cards is shuffled. You flip cards one at a time, saying 'ace of spades, two of spades...' in order. On average, how many times does your call match the card?", "note": "same move; answer 1" },
+      { "statementAudio": "100 light switches start off. 100 people each flip 10 random distinct switches. Expected number of switches that end up on?", "note": "indicator per switch: P(odd number of flips); harder execution, same skeleton" }
+    ]
+  },
+  {
+    "id": "q-coupon-collector",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Expectation",
+    "statement": "You roll a fair die repeatedly. What is the expected number of rolls until you have seen all six faces at least once?",
+    "statementAudio": "You roll a fair die over and over. On average, how many rolls does it take until you've seen every one of the six faces at least once?",
+    "difficulty": 3,
+    "primaryPatternId": "indicators-linearity",
+    "secondaryPatternId": "memorylessness",
+    "recognitionClues": [
+      "'until you've collected all types' — coupon collector structure",
+      "break the wait into stages: time to the next NEW face",
+      "each stage is geometric, and geometric means memoryless"
+    ],
+    "prerequisites": ["geometric distribution", "linearity of expectation"],
+    "commonMistake": "Trying to enumerate sequences directly instead of staging the process; or averaging 6 rolls per face.",
+    "similarQuestionIds": ["q-hat-matching", "q-two-heads-row"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Can you break the whole wait into pieces whose expectations you know?",
+      "L2": "Stage the process: after you've seen k distinct faces, what are you waiting for, and what's the success probability per roll?",
+      "L3": "Each stage is geometric: with k faces seen, a new face arrives with probability (6-k)/6, so the expected wait is 6/(6-k). Sum the stages.",
+      "L4": "Write it out: 6/6 + 6/5 + 6/4 + 6/3 + 6/2 + 6/1. Factor out the 6.",
+      "L5": "Together: 6 × (1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6) = 6 × 2.45 = 14.7.",
+      "L6": "Full solution: 14.7 rolls. The lesson: waits decompose into geometric stages, and linearity glues them back together. General form: n times the n-th harmonic number."
+    },
+    "rubric": {
+      "required": [
+        "stages the process by number of distinct faces seen",
+        "identifies each stage as geometric with success probability (6-k)/6",
+        "uses E[geometric] = 1/p per stage and sums by linearity",
+        "computes 14.7"
+      ],
+      "bonus": ["states the general n·H_n form"]
+    },
+    "canonicalSolution": "E = Σ_{k=0}^{5} 6/(6-k) = 6(1 + 1/2 + 1/3 + 1/4 + 1/5 + 1/6) = 6 · 49/20 = 14.7.",
+    "variations": [
+      { "statementAudio": "A cereal brand puts one of 10 equally likely toys in each box. Expected number of boxes to collect all 10?", "note": "same skeleton; 10·H_10 ≈ 29.3" },
+      { "statementAudio": "You roll a die until you've seen all six faces. Given you've just seen your fifth new face, expected additional rolls?", "note": "memorylessness focus; answer 6" }
+    ]
+  },
+  {
+    "id": "q-two-heads-row",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Markov chains",
+    "statement": "A fair coin is flipped repeatedly. What is the expected number of flips until two heads appear in a row?",
+    "statementAudio": "Flip a fair coin over and over. On average, how many flips until you get two heads in a row?",
+    "difficulty": 3,
+    "primaryPatternId": "recursion-first-step",
+    "secondaryPatternId": null,
+    "recognitionClues": [
+      "the process 'restarts' after a tail — self-similar structure",
+      "progress is captured by a small state: how many consecutive heads you currently have",
+      "define expected times from each state and condition on one flip"
+    ],
+    "prerequisites": ["conditional expectation", "solving linear equations"],
+    "commonMistake": "Answering 4 by treating 'HH' like two independent 4-flip waits, or setting up states but dropping the '+1' for the flip taken.",
+    "similarQuestionIds": ["q-coupon-collector", "q-gamblers-ruin"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What minimal information about the history do you need to know how close you are?",
+      "L2": "The process repeats itself. Define a state for 'streak of heads right now' and think about what one flip does to it.",
+      "L3": "First-step analysis: let E0 be the expected flips from a cold start and E1 from one-head-in-hand. Condition each on the next flip.",
+      "L4": "From E0: one flip spent, heads takes you to E1, tails returns you to E0. So E0 = 1 + half E1 + half E0. Do the same for E1.",
+      "L5": "Together: E1 = 1 + half times 0 + half E0. Substitute into E0's equation and solve the pair.",
+      "L6": "Full solution: E1 = 1 + E0/2, E0 = 1 + (E1 + E0)/2 → E0 = 6. The lesson: define the smallest state that captures progress, spend one step, and let algebra finish. Sanity check: HHH takes 14."
+    },
+    "rubric": {
+      "required": [
+        "defines states by current head-streak",
+        "writes first-step equations including the +1 per flip",
+        "solves to get 6",
+        "does not claim independence-based shortcuts"
+      ],
+      "bonus": ["generalizes: expected time to n heads in a row is 2^(n+1) - 2"]
+    },
+    "canonicalSolution": "States: 0 or 1 consecutive heads. E1 = 1 + (1/2)(0) + (1/2)E0; E0 = 1 + (1/2)E1 + (1/2)E0. Solving: E0 = 6.",
+    "variations": [
+      { "statementAudio": "Expected number of flips of a fair coin until you see heads followed immediately by tails?", "note": "HT is 4, not 6 — tests whether they understand overlap structure rather than memorizing" },
+      { "statementAudio": "A basketball player makes each free throw with probability 1/3. Expected number of shots until two makes in a row?", "note": "same skeleton, p=1/3; E = (1/p + 1/p²) = 12" }
+    ]
+  },
+  {
+    "id": "q-gamblers-ruin",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Random walks",
+    "statement": "You start with $2 and repeatedly bet $1 on a fair coin flip. You stop when you reach $5 or go broke. What is the probability you reach $5?",
+    "statementAudio": "You start with two dollars and bet one dollar at a time on a fair coin. You stop when you hit five dollars, or when you're broke. What's the probability you get to five?",
+    "difficulty": 3,
+    "primaryPatternId": "martingale-optional-stopping",
+    "secondaryPatternId": "recursion-first-step",
+    "recognitionClues": [
+      "fair game — your bankroll is a martingale",
+      "two absorbing barriers — optional stopping gives the answer in one line",
+      "alternative: linear recursion in the starting bankroll"
+    ],
+    "prerequisites": ["expectation", "martingale idea (fair game)"],
+    "commonMistake": "Grinding through the recursion without noticing the fair-game shortcut; or assuming the walk might never end (it ends with probability 1).",
+    "similarQuestionIds": ["q-two-heads-row"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Is this game fair? What does fairness tell you about your expected bankroll at any time?",
+      "L2": "Your expected bankroll never changes — it's a martingale. What must your expected FINAL bankroll equal?",
+      "L3": "Optional stopping: E[final bankroll] = starting bankroll = 2. The final bankroll is either 0 or 5.",
+      "L4": "Write E[final] = 5p + 0(1-p) and set it equal to 2.",
+      "L5": "Together: 5p = 2, so p = 2/5.",
+      "L6": "Full solution: 2/5. General lesson: in a fair game with barriers at 0 and N starting from i, P(reach N) = i/N. The fair-game/martingale observation replaces an entire recursion."
+    },
+    "rubric": {
+      "required": [
+        "identifies the game as fair and the bankroll as conserved in expectation",
+        "sets starting bankroll equal to expected final bankroll",
+        "solves 5p = 2 to get p = 2/5"
+      ],
+      "bonus": ["states the general i/N formula", "notes the biased-coin version needs the (q/p)^i machinery instead"]
+    },
+    "canonicalSolution": "Bankroll is a martingale; the game ends with probability 1. Optional stopping: 2 = E[final] = 5p + 0·(1-p) → p = 2/5. Generally P = i/N for start i, target N.",
+    "variations": [
+      { "statementAudio": "Same game, but you start with 30 dollars and stop at 100 or zero. Probability you reach 100?", "note": "same one-liner; 3/10" },
+      { "statementAudio": "Fair coin, you start at 2 dollars, barriers at 0 and 5. On average, how LONG does the game last?", "note": "second martingale: bankroll² minus t; E[T] = i(N-i) = 6" }
+    ]
+  },
+  {
+    "id": "q-drunk-passenger",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Symmetry",
+    "statement": "100 passengers board a full plane in order. The first passenger lost his ticket and sits in a uniformly random seat. Every later passenger takes their own seat if free, otherwise a uniformly random free seat. What is the probability the last passenger gets their own seat?",
+    "statementAudio": "A hundred passengers board a full plane one by one. Passenger one lost his ticket and picks a random seat. Everyone after takes their own seat if it's free — otherwise a random free one. What's the probability the LAST passenger ends up in their own seat?",
+    "difficulty": 3,
+    "primaryPatternId": "symmetry-exchangeability",
+    "secondaryPatternId": "invariant-argument",
+    "recognitionClues": [
+      "a huge messy process with a suspiciously clean question — look for symmetry",
+      "only two seats ever matter for the final outcome: seat 1 and seat 100",
+      "whoever is forced to choose randomly faces those two seats symmetrically"
+    ],
+    "prerequisites": ["conditional probability"],
+    "commonMistake": "Attempting to track the full seat-assignment process; assuming the answer depends on N.",
+    "similarQuestionIds": ["q-fair-from-biased"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Try it with 2 passengers. Then 3. What do you notice?",
+      "L2": "Which seats actually determine whether the last passenger is happy? Ignore everything else.",
+      "L3": "Symmetry: at every random choice, seat 1 and seat 100 are interchangeable — nothing in the process distinguishes them.",
+      "L4": "The process ends the moment someone randomly picks either seat 1 or seat 100. If seat 1 goes first, everyone downstream — including the last passenger — gets their own seat. If seat 100 goes first, the last passenger is displaced.",
+      "L5": "Together: every random chooser picks seat 1 or seat 100 with equal probability, and one of the two is eventually picked. So the two endings are equally likely.",
+      "L6": "Full solution: 1/2, for any number of passengers. The lesson: find the two objects the question actually depends on, and check whether the dynamics treat them symmetrically — if yes, you're done without any computation."
+    },
+    "rubric": {
+      "required": [
+        "reduces the problem to the fate of seat 1 versus seat 100",
+        "argues the process treats those two seats symmetrically at every random choice",
+        "concludes 1/2, independent of N"
+      ],
+      "bonus": ["verifies with the N=2 or N=3 case"]
+    },
+    "canonicalSolution": "Only seats 1 and 100 matter. Each random selection either picks a 'neutral' seat (passing the problem along), or ends the game by picking seat 1 (last passenger happy) or seat 100 (not). By symmetry those two terminal picks are always equally likely, so P = 1/2 for any N.",
+    "variations": [
+      { "statementAudio": "Same plane story, but what's the probability that passenger 99 — second to last — gets their own seat?", "note": "same reduction with three special seats; answer 2/3" },
+      { "statementAudio": "N people, random seating as before. On average, how many passengers do NOT get their own seat?", "note": "harder, links to harmonic numbers — good desk follow-up" }
+    ]
+  },
+  {
+    "id": "q-fair-from-biased",
+    "sourceRef": "classic (von Neumann)",
+    "topic": "Probability",
+    "subtopic": "Simulation",
+    "statement": "You have a biased coin with unknown P(heads) = p. How can you use it to generate a fair 50/50 random bit?",
+    "statementAudio": "You've got a biased coin — heads probability p, and you don't even know p. How do you use it to produce a perfectly fair fifty-fifty decision?",
+    "difficulty": 2,
+    "primaryPatternId": "symmetry-exchangeability",
+    "secondaryPatternId": "work-backward",
+    "recognitionClues": [
+      "you need EXACT fairness from an unknown bias — so the construction must be symmetric by design",
+      "look for two composite outcomes with identical probabilities",
+      "ordered pairs: HT and TH are mirror images"
+    ],
+    "prerequisites": ["independence"],
+    "commonMistake": "Proposing schemes that depend on knowing p, or that only approximate fairness.",
+    "similarQuestionIds": ["q-drunk-passenger"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "You can't fix the coin — can you build two outcomes that MUST have equal probability?",
+      "L2": "Think about flipping twice. List the four ordered outcomes and their probabilities.",
+      "L3": "Symmetry: HT has probability p(1-p) and TH has (1-p)p. Identical, for every p.",
+      "L4": "So: flip twice. HT means... TH means... and what do you do with HH or TT?",
+      "L5": "Together: flip twice; HT → output heads, TH → output tails, HH or TT → discard and repeat. Each accepted round is exactly 50/50.",
+      "L6": "Full solution: the von Neumann extractor. Expected flips per bit: 2 divided by 2p(1-p) — e.g. 4 flips when the coin is actually fair, more as it gets extreme. The lesson: when exactness is required under unknown parameters, build the symmetry yourself."
+    },
+    "rubric": {
+      "required": [
+        "proposes the two-flip HT/TH scheme with discard-and-repeat",
+        "proves fairness: p(1-p) = (1-p)p for all p",
+        "notes the scheme never needs to know p"
+      ],
+      "bonus": ["computes the expected number of flips per output bit: 1/(p(1-p))"]
+    },
+    "canonicalSolution": "Flip twice: output 'heads' on HT, 'tails' on TH, repeat on HH/TT. P(HT) = P(TH) = p(1-p), so conditioned on acceptance the bit is exactly fair, regardless of p.",
+    "variations": [
+      { "statementAudio": "Using a fair coin, how do you simulate an event with probability exactly one third?", "note": "reverse direction: binary expansion / rejection — flip twice, map HH,HT,TH to thirds, repeat on TT" },
+      { "statementAudio": "You have a fair six-sided die but need a uniform random number from 1 to 7. How?", "note": "rejection sampling: roll twice for base-6 pairs, keep 35 of 36 outcomes, map to 1–7" }
+    ]
+  },
+  {
+    "id": "q-max-two-dice",
+    "sourceRef": "classic",
+    "topic": "Probability",
+    "subtopic": "Order statistics",
+    "statement": "Two fair dice are rolled. What is the expected value of the larger of the two numbers?",
+    "statementAudio": "Roll two fair dice. On average, what's the value of the LARGER of the two numbers showing?",
+    "difficulty": 2,
+    "primaryPatternId": "order-statistics",
+    "secondaryPatternId": "complement-counting",
+    "recognitionClues": [
+      "max of independent draws — order statistics",
+      "the CDF of the max factorizes: P(max ≤ k) = P(single ≤ k) squared",
+      "for expectations of small discrete variables, the tail-sum E[X] = Σ P(X ≥ k) is clean"
+    ],
+    "prerequisites": ["CDFs", "expectation"],
+    "commonMistake": "Enumerating all 36 outcomes without structure (error-prone verbally); or confusing P(max ≤ k) with P(max = k).",
+    "similarQuestionIds": ["q-birthday-50"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Is it easier to describe P(max equals k) or P(max is at most k)?",
+      "L2": "The max is at most k exactly when BOTH dice are at most k. What's that probability?",
+      "L3": "Order statistics via the CDF: P(max ≤ k) = (k/6)². And there's a tail-sum identity for expectations of non-negative integer variables.",
+      "L4": "E[max] = Σ over k from 1 to 6 of P(max ≥ k) = Σ of 1 minus ((k-1)/6)². Set up that sum.",
+      "L5": "Together: 6 minus one thirty-sixth of (0+1+4+9+16+25) = 6 - 55/36.",
+      "L6": "Full solution: 161/36 ≈ 4.47. The lesson: maxima and minima want CDFs, and the tail-sum identity turns a messy pmf calculation into one clean sum. By symmetry, E[min] = 7 - 161/36 = 91/36."
+    },
+    "rubric": {
+      "required": [
+        "uses P(max ≤ k) = (k/6)²",
+        "either tail-sums or correctly differences the CDF",
+        "arrives at 161/36 ≈ 4.47"
+      ],
+      "bonus": ["derives E[min] via E[min] + E[max] = 7"]
+    },
+    "canonicalSolution": "P(max ≥ k) = 1 - ((k-1)/6)². E[max] = Σ_{k=1}^{6} P(max ≥ k) = 6 - (0+1+4+9+16+25)/36 = 6 - 55/36 = 161/36 ≈ 4.472.",
+    "variations": [
+      { "statementAudio": "Three fair dice — expected value of the largest?", "note": "same CDF move, cubes instead of squares; 6 - (0+1+8+27+64+125)/216 = 1071/216 ≈ 4.96" },
+      { "statementAudio": "Two uniform random numbers between 0 and 1. Expected value of the larger? And the smaller?", "note": "continuous twin; 2/3 and 1/3" }
+    ]
+  },
+  {
+    "id": "q-broken-stick",
+    "sourceRef": "classic / green book",
+    "topic": "Probability",
+    "subtopic": "Geometric probability",
+    "statement": "A stick is broken at two points chosen uniformly at random along its length. What is the probability that the three pieces can form a triangle?",
+    "statementAudio": "A stick gets snapped at two uniformly random points. What's the probability the three pieces can form a triangle? This one really wants a picture — it's queued for your desk session.",
+    "difficulty": 3,
+    "primaryPatternId": "equally-likely-count",
+    "secondaryPatternId": "complement-counting",
+    "recognitionClues": [
+      "uniform points on a length — geometric probability, area in the unit square/triangle",
+      "triangle inequality: no piece may exceed half the stick",
+      "the constraint region is best SEEN, not narrated"
+    ],
+    "prerequisites": ["geometric probability", "triangle inequality"],
+    "commonMistake": "Setting up the wrong sample space (ordered vs unordered break points); mishandling the three symmetric 'too long' regions.",
+    "similarQuestionIds": [],
+    "voiceSuitability": "desk_only",
+    "hintLadder": {
+      "L1": "What condition must three lengths satisfy to form a triangle, and what does it mean here?",
+      "L2": "No piece may exceed half the stick. Set the stick length to 1, call the break points x and y, and describe the sample space.",
+      "L3": "Geometric probability: the sample space is the unit square of (x, y); the triangle condition carves out a region whose AREA is the answer.",
+      "L4": "For x < y the pieces are x, y - x, 1 - y. Write the three 'no piece over one half' inequalities and sketch them.",
+      "L5": "Each of the three violation regions (one per piece being too long) has area 1/4 of the relevant half-square, and they don't overlap. Shade and subtract.",
+      "L6": "Full solution: 1/4. The lesson: uniform breaks become areas; and the complement (some piece too long) splits into three clean symmetric regions."
+    },
+    "rubric": {
+      "required": [
+        "translates triangle inequality into 'every piece under 1/2'",
+        "sets up the (x,y) unit-square sample space",
+        "computes the valid area = 1/4"
+      ],
+      "bonus": ["notes the symmetry between the three violation regions"]
+    },
+    "canonicalSolution": "With break points x, y uniform on [0,1], condition on x<y (symmetric halves). Pieces x, y-x, 1-y each < 1/2 defines a triangle of area 1/8 within the half-square of area 1/2, so P = (1/8)/(1/2) = 1/4.",
+    "variations": [
+      { "statementAudio": "A stick is broken at one random point; the longer piece is then broken at a random point. Probability the three pieces form a triangle?", "note": "answer changes to ~0.386 (2 ln 2 - 1)... sequential breaking is a different measure — excellent discussion" },
+      { "statementAudio": "Two points chosen at random on a circle's circumference plus a third — probability the triangle contains the center?", "note": "related geometric-probability classic; 1/4" }
+    ]
+  },
+  {
+    "id": "q-market-on-die",
+    "sourceRef": "interview classic (trading)",
+    "topic": "Market making",
+    "subtopic": "Two-sided quoting",
+    "statement": "Make me a market on the outcome of one roll of a fair die. I may buy or sell at your quotes. What market do you make, and why?",
+    "statementAudio": "Make me a market on one roll of a fair die. I can buy or sell against your quotes — you don't know which. Where's your market, and why?",
+    "difficulty": 2,
+    "primaryPatternId": "market-making-intuition",
+    "secondaryPatternId": null,
+    "recognitionClues": [
+      "'make me a market' — they want a two-sided quote around fair value, not a single number",
+      "fair value = expected value; spread = compensation for uncertainty and adverse selection",
+      "be ready to be lifted OR hit, and to update if the counterparty trades repeatedly"
+    ],
+    "prerequisites": ["expectation"],
+    "commonMistake": "Quoting only fair value with no spread; making a market you wouldn't be happy to trade on either side; quoting an inverted or crossing market under pressure.",
+    "similarQuestionIds": ["q-fermi-piano-tuners"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "What's the fair value of one die roll?",
+      "L2": "You have fair value 3.5. A market is a bid and an offer around it. What do the two sides mean for you?",
+      "L3": "Quote bid below 3.5, offer above — say 3.25 at 3.75, or wider. Now, WHY not quote 3.49 at 3.51?",
+      "L4": "Think about who trades with you and when: with a known distribution the edge story is simple, but your spread still prices your risk per trade and any chance the counterparty knows something you don't.",
+      "L5": "Together: something like '3.3 bid, at 3.7' — centered on 3.5, symmetric, wide enough to earn edge, tight enough to trade. Say it in market language: '3.3 at 3.7'.",
+      "L6": "Full answer: fair 3.5; quote e.g. 3.3 at 3.7 and be genuinely happy on either side; tighten if forced to compete, widen if the counterparty seems informed or size increases. The lesson: a market is a statement of fair value PLUS your price for uncertainty — always know both parts separately."
+    },
+    "rubric": {
+      "required": [
+        "computes fair value 3.5",
+        "quotes a genuine two-sided market bracketing fair value",
+        "explains spread as compensation for risk/adverse selection",
+        "is willing to trade at either side of their own quote"
+      ],
+      "bonus": ["discusses updating quotes on repeated flow", "mentions sizing"]
+    },
+    "canonicalSolution": "Fair value E = 3.5. Quote a symmetric market around it, e.g. 3.3 bid / 3.7 offer. The spread compensates per-trade variance and potential informed flow. Be prepared to honor both sides, and adjust center/width on flow.",
+    "variations": [
+      { "statementAudio": "Make me a market on the SUM of two dice.", "note": "fair 7, more variance — should widen; tests scaling of the same skeleton" },
+      { "statementAudio": "You quoted 3.3 at 3.7 on one die. I buy at 3.7 five times in a row. What do you do?", "note": "flow-updating: with a known die there's no information, but tests whether they think about who they're trading against — invites the 'is the die fair?' question" }
+    ]
+  },
+  {
+    "id": "q-fermi-piano-tuners",
+    "sourceRef": "classic (Fermi)",
+    "topic": "Estimation",
+    "subtopic": "Fermi problems",
+    "statement": "Estimate the number of piano tuners in Chicago.",
+    "statementAudio": "Rough estimate — how many piano tuners work in Chicago? Talk me through your factors out loud.",
+    "difficulty": 2,
+    "primaryPatternId": "fermi-estimation",
+    "secondaryPatternId": "mental-math",
+    "recognitionClues": [
+      "an unknowable-sounding number — decompose into factors you can bound",
+      "balance a DEMAND side (tunings needed per year) against a SUPPLY side (tunings one tuner can do)",
+      "errors in factors partially cancel in the product — aim for the right order of magnitude"
+    ],
+    "prerequisites": ["arithmetic"],
+    "commonMistake": "Guessing the final number directly; false precision; forgetting to sanity-check the result.",
+    "similarQuestionIds": ["q-market-on-die", "q-mental-math-drill"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Don't guess the answer — what smaller quantities could you multiply together to get it?",
+      "L2": "Split it into demand and supply: how many piano-tunings does Chicago need per year, and how many can one tuner perform?",
+      "L3": "Chain: population → households → fraction with pianos → tunings per piano per year, then divide by tunings per tuner per year.",
+      "L4": "Try: 3 million people, 2.5 per household → about a million households; say 1 in 20 has a piano; tuned once a year. Supply side: a tuner does maybe 4 a day, 250 days a year.",
+      "L5": "Together: demand ≈ 50,000 tunings/year; one tuner ≈ 1,000 tunings/year; divide.",
+      "L6": "Full estimate: around 50 tuners — anywhere from 30 to 100 is a good answer. The lesson: decompose, bound each factor within 3x, multiply, and sanity-check the result against something you know."
+    },
+    "rubric": {
+      "required": [
+        "decomposes into a factor chain rather than guessing",
+        "estimates each factor with stated reasoning",
+        "balances demand against one tuner's capacity",
+        "lands within roughly 30–150 and acknowledges the uncertainty"
+      ],
+      "bonus": ["sanity-checks against an external anchor", "notes which factor is most uncertain"]
+    },
+    "canonicalSolution": "≈3M people / 2.5 per household ≈ 1.2M households; ~5% own pianos ≈ 60k pianos; ~1 tuning/year ≈ 60k tunings. A tuner: ~4/day × 250 days ≈ 1000/year. 60k/1000 ≈ 60 tuners. Order of magnitude: tens, not hundreds.",
+    "variations": [
+      { "statementAudio": "Estimate how many golf balls fit in a school bus.", "note": "same decomposition skill, volume-based; ~500k" },
+      { "statementAudio": "Estimate the daily notional volume of coffee sold in Manhattan.", "note": "money-flavored Fermi; tests demand-side chains" }
+    ]
+  },
+  {
+    "id": "q-mental-math-drill",
+    "sourceRef": "drill",
+    "topic": "Mental math",
+    "subtopic": "Multiplication tricks",
+    "statement": "Compute 17 × 24, then 43 × 47, then 998 × 1002 — mentally, explaining your method for each.",
+    "statementAudio": "Quick drill, out loud, one at a time. First: 17 times 24. ... Then: 43 times 47. ... Last one: 998 times 1002. Explain your trick for each.",
+    "difficulty": 1,
+    "primaryPatternId": "mental-math",
+    "secondaryPatternId": null,
+    "recognitionClues": [
+      "look for a nearby round number: 17×24 = 17×25 − 17",
+      "43×47: same distance from 45 — difference of squares",
+      "998×1002: (1000−2)(1000+2) — difference of squares again"
+    ],
+    "prerequisites": ["arithmetic"],
+    "commonMistake": "Left-to-right grinding without structure; sign errors in round-and-correct.",
+    "similarQuestionIds": ["q-fermi-piano-tuners"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Is there a round number near one of the factors?",
+      "L2": "For 17×24: what's 17×25, and how do you correct? For the other two: both factors sit symmetrically around something.",
+      "L3": "Round-and-correct for the first; difference of squares — (a−b)(a+b) = a² − b² — for the second and third.",
+      "L4": "17×25 is a quarter of 1700. 43 and 47 straddle 45; 45² you can build from (40)(50)+25. 998 and 1002 straddle 1000.",
+      "L5": "Together: 425 − 17 = 408. Then 45² − 2² = 2025 − 4 = 2021. Then 1000² − 2² = 999,996.",
+      "L6": "Answers: 408, 2021, 999996. The lesson: before multiplying anything, spend two seconds looking for structure — a nearby round number or a symmetric straddle. It's faster AND less error-prone than grinding."
+    },
+    "rubric": {
+      "required": [
+        "gets 408, 2021, and 999996",
+        "uses (or discovers) round-and-correct for the first",
+        "uses difference of squares for at least one of the last two",
+        "verbalizes the method, not just the answer"
+      ],
+      "bonus": ["computes 45² via the '×5 squared' trick: 4×5 = 20, append 25 → 2025"]
+    },
+    "canonicalSolution": "17×24 = 17×25 − 17 = 425 − 17 = 408. 43×47 = 45² − 4 = 2021. 998×1002 = 1000² − 4 = 999996.",
+    "variations": [
+      { "statementAudio": "Compute 19 times 21, then 65 squared, then 12.5 percent of 640.", "note": "399; 4225; 80 — same three tricks reshuffled" },
+      { "statementAudio": "What is 7 to the 4th power? Talk through how you chunk it.", "note": "49² = 2401 — chains squaring with difference-of-squares comfort" }
+    ]
+  },
+  {
+    "id": "q-ants-triangle",
+    "sourceRef": "classic brainteaser",
+    "topic": "Brainteasers",
+    "subtopic": "Symmetry counting",
+    "statement": "Three ants sit at the corners of a triangle. Each simultaneously picks a random direction along the edges and starts walking at the same speed. What is the probability that no two ants collide?",
+    "statementAudio": "Three ants sit on the three corners of a triangle. At the same moment, each one randomly picks one of the two edges at its corner and starts walking. All the same speed. What's the probability that NO two ants ever collide?",
+    "difficulty": 2,
+    "primaryPatternId": "equally-likely-count",
+    "secondaryPatternId": "symmetry-exchangeability",
+    "recognitionClues": [
+      "collisions are avoided only in globally coordinated configurations — think about what the good outcomes look like",
+      "each ant has 2 choices → 8 equally likely outcomes total",
+      "the good cases are 'all clockwise' and 'all counterclockwise'"
+    ],
+    "prerequisites": ["counting"],
+    "commonMistake": "Trying to analyze collision geometry edge by edge instead of characterizing the collision-free configurations.",
+    "similarQuestionIds": ["q-drunk-passenger"],
+    "voiceSuitability": "high",
+    "hintLadder": {
+      "L1": "Describe a scenario where no collision happens. What does it look like globally?",
+      "L2": "If any two ants walk toward each other on a shared edge, they collide. When does that never happen?",
+      "L3": "Count: no collision exactly when all three ants rotate the same way — all clockwise or all counterclockwise.",
+      "L4": "How many total outcomes are there, with each of 3 ants choosing between 2 directions?",
+      "L5": "Together: 2 good outcomes out of 2³ = 8.",
+      "L6": "Full solution: 2/8 = 1/4. The lesson: characterize the good GLOBAL configurations first; don't simulate the process. Generalizes to n ants on an n-gon: 2/2ⁿ."
+    },
+    "rubric": {
+      "required": [
+        "identifies collision-free = all same rotational direction",
+        "counts 8 equally likely outcomes",
+        "answers 1/4"
+      ],
+      "bonus": ["generalizes to n ants: 2/2ⁿ = 2^(1-n)"]
+    },
+    "canonicalSolution": "Each ant picks one of 2 directions: 8 outcomes. No collision iff all go clockwise or all counterclockwise: 2 outcomes. P = 2/8 = 1/4.",
+    "variations": [
+      { "statementAudio": "Four ants on the corners of a square, same setup. Probability of no collision?", "note": "same characterization; 2/16 = 1/8" },
+      { "statementAudio": "Three people at a round table each randomly pass a plate left or right. Probability nobody receives two plates?", "note": "isomorphic problem in disguise — tests recognition transfer; 1/4" }
+    ]
+  }
+]

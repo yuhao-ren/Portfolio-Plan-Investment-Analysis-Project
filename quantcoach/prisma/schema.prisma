@@ -1,0 +1,100 @@
+// QuantCoach schema — mirrors docs/voice-interview-prep-design.md §3.4.
+// SQLite for zero-setup single-user deployment; switch provider to
+// "postgresql" (Supabase) by changing datasource + DATABASE_URL.
+// JSON-shaped fields are stored as serialized strings for SQLite
+// compatibility; src/lib/records.ts owns (de)serialization.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model Pattern {
+  id               String   @id
+  name             String
+  domain           String // probability | statistics | stochastic | brainteaser | market-making | mental-math | ...
+  decisionTreeNode Int? // position in the "what to try when stuck" tree, null if off-tree
+  description      String
+
+  questionsPrimary   Question[]     @relation("primaryPattern")
+  questionsSecondary Question[]     @relation("secondaryPattern")
+  mastery            SkillMastery?
+}
+
+model Question {
+  id                 String  @id
+  sourceRef          String // provenance: book/page, site, upload name
+  topic              String
+  subtopic           String
+  statement          String
+  statementAudio     String // audio-friendly rewrite
+  difficulty         Int // 1-5
+  primaryPatternId   String
+  secondaryPatternId String?
+  recognitionClues   String // JSON string[]
+  prerequisites      String // JSON string[]
+  commonMistake      String
+  similarQuestionIds String // JSON string[]
+  voiceSuitability   String // high | medium | desk_only
+  hintLadder         String // JSON {L1..L6: string}
+  rubric             String // JSON {required: string[], bonus: string[]}
+  canonicalSolution  String
+  variations         String // JSON {statementAudio, note}[]
+  active             Boolean @default(true)
+
+  primaryPattern   Pattern   @relation("primaryPattern", fields: [primaryPatternId], references: [id])
+  secondaryPattern Pattern?  @relation("secondaryPattern", fields: [secondaryPatternId], references: [id])
+  attempts         Attempt[]
+}
+
+model Session {
+  id                  String    @id @default(cuid())
+  mode                String // drive | study | interview
+  startedAt           DateTime  @default(now())
+  endedAt             DateTime?
+  plannedMinutes      Int
+  summaryText         String? // the post-session mistake log
+  deferredQuestionIds String    @default("[]") // JSON string[]
+  state               String    @default("{}") // JSON working state: {served: string[], hints: {qid: level}, verdicts: {qid: verdict}}
+
+  attempts Attempt[]
+}
+
+model Attempt {
+  id                  String   @id @default(cuid())
+  questionId          String
+  sessionId           String
+  mode                String
+  startedAt           DateTime @default(now())
+  transcriptSummary   String   @default("")
+  hintLevelReached    Int      @default(0) // 0-6
+  solvedIndependently Boolean  @default(false)
+  recognitionScore    Int? // 0-5
+  setupScore          Int?
+  calculationScore    Int?
+  explanationScore    Int?
+  mistakeNote         String   @default("")
+  evaluatorVerdict    String   @default("{}") // full structured verdict JSON
+
+  question Question @relation(fields: [questionId], references: [id])
+  session  Session  @relation(fields: [sessionId], references: [id])
+}
+
+model SkillMastery {
+  patternId     String    @id
+  recognition   Float     @default(2.5) // rolling 0-5
+  setup         Float     @default(2.5)
+  calculation   Float     @default(2.5)
+  explanation   Float     @default(2.5)
+  masteryPct    Int       @default(50) // derived composite 0-100
+  confidence    String    @default("low") // low | medium | high
+  lastAttemptAt DateTime?
+  nextReviewAt  DateTime?
+  streak        Int       @default(0)
+
+  pattern Pattern @relation(fields: [patternId], references: [id])
+}
